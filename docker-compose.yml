@@ -1,0 +1,19 @@
+services:
+  wayward-server:
+    image: wayward:latest
+    container_name: wayward-server
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=100
+      - STEAM_USER=${STEAM_USER}
+      - STEAM_PASS=${STEAM_PASS}
+      # - port=38740 
+      - load=sam 
+      # - private=true 
+    ports:
+      - 38740:38740
+    volumes:
+      - /mnt/user/appdata/wayward/server:/home/steam/wayward-server
+      - /mnt/user/appdata/wayward/saves:/home/steam/save
+      - /mnt/user/appdata/wayward/steamcache:/home/steam/Steam
