@@ -1,6 +1,6 @@
 services:
   wayward-server:
-    image: wayward:latest
+    image: samuelt1/wayward:latest
     container_name: wayward-server
     restart: unless-stopped
     environment:
@@ -12,6 +12,4 @@ services:
     ports:
       - 38740:38740
     volumes:
-      - ${LOCAL_PATH}/server:/home/steam/wayward-server
-      - ${LOCAL_PATH}/saves:/home/steam/save
-      - ${LOCAL_PATH}/steamcache:/home/steam/Steam
+      - ${LOCAL_PATH}:/home/steam/data

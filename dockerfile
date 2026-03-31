@@ -14,8 +14,11 @@ RUN dpkg --add-architecture i386 && \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash steam && \
-    mkdir -p /home/steam/steamcmd && \
+    mkdir -p /home/steam/steamcmd /home/steam/data/server /home/steam/data/saves /home/steam/data/steamcache && \
     curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxf - -C /home/steam/steamcmd && \
+    ln -s /home/steam/data/server /home/steam/wayward-server && \
+    ln -s /home/steam/data/saves /home/steam/save && \
+    ln -s /home/steam/data/steamcache /home/steam/Steam && \
     chown -R steam:steam /home/steam
 
 USER steam
@@ -24,6 +27,6 @@ WORKDIR /home/steam
 COPY --chown=steam:steam entrypoint.sh /home/steam/entrypoint.sh
 RUN chmod +x /home/steam/entrypoint.sh
 
-EXPOSE 38840/udp
+EXPOSE 38740/udp
 
 ENTRYPOINT ["/home/steam/entrypoint.sh"]

@@ -5,22 +5,34 @@ A Docker container for running a Wayward dedicated server with full configuratio
 ## Quick Start
 
 ```bash
-docker build -t wayward-server .
 docker run -d -p 38740:38740 \
+  -v wayward_data:/home/steam/data \
   -e STEAM_USER="your_steam_username" \
   -e STEAM_PASS="your_steam_password" \
-  wayward-server
+  samuelt1/wayward:latest
 ```
 
 ## Configuration
 
 All Wayward server options can be configured through environment variables. Variable names match the exact command-line parameter names found here: https://www.waywardgame.com/multiplayer
 
+Example configuration
+
+```bash
+docker run -d -p 38740:38740 \
+  -v wayward_data:/home/steam/data \
+  -e STEAM_USER="your_steam_username" \
+  -e STEAM_PASS="your_steam_password" \
+  -e allowHardcoreRespawns="true" \
+  -e pvp="true" \
+  -e backupInterval="30" \
+  samuelt1/wayward:latest
+```
+
 ### Steam Authentication
 
 - `STEAM_USER` - Steam username (optional - tries anonymous first)
 - `STEAM_PASS` - Steam password (optional - tries anonymous first)
-
 
 ### Switch Options (Boolean)
 
@@ -62,7 +74,7 @@ Only added if the environment variable is set:
 |----------|-------------|---------|
 | `load` | Game name to load on startup - creates if doesn't exist | `"My World"` |
 | `milestones` | Comma-separated string of milestones to load | `"milestone1,milestone2"` |
-| `savePath` | Custom save path (defaults to `/home/steam/save`) | `"/custom/path"` |
+| `savePath` | Custom save path (defaults to `/home/steam/data/saves`) | `"/custom/path"` |
 | `seed` | World generation seed | `123456` |
 | `sshPassword` | SSH password | `"secure_password"` |
 | `sshPort` | SSH port | `22` |
@@ -74,7 +86,7 @@ Only added if the environment variable is set:
 version: '3.8'
 services:
   wayward:
-    build: .
+    image: samuelt1/wayward:latest
     ports:
       - "38740:38740"
     environment:
@@ -86,11 +98,11 @@ services:
       - backupInterval=15
       - port=38740
     volumes:
-      - wayward_saves:/home/steam/save
+      - wayward_data:/home/steam/data
     restart: unless-stopped
 
 volumes:
-  wayward_saves:
+  wayward_data:
 ```
 
 ## Advanced Configuration
@@ -125,16 +137,22 @@ environment:
 
 ## Data Persistence
 
-The server saves are stored in `/home/steam/save` inside the container. Mount this as a volume to persist your worlds:
+All server data is consolidated into a single volume at `/home/steam/data` which contains:
+
+- `server/` - Wayward server installation files
+- `saves/` - Game saves and world data
+- `steamcache/` - Steam cache and authentication data
+
+Mount this single volume to persist all your data:
 
 ```bash
--v wayward_saves:/home/steam/save
+-v wayward_data:/home/steam/data
 ```
 
-## Building
+## Pulling the Image
 
 ```bash
-docker build -t wayward-server .
+docker pull samuelt1/wayward:latest
 ```
 
 ## Troubleshooting

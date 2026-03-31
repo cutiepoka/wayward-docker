@@ -5,7 +5,7 @@ echo ">>> Updating Wayward server..."
 
 # Try anonymous login first, fallback to authenticated if needed
 if ! timeout 120 /home/steam/steamcmd/steamcmd.sh \
-    +force_install_dir /home/steam/wayward-server \
+    +force_install_dir /home/steam/data/server \
     +login anonymous \
     +app_update 379210 validate \
     +quit; then
@@ -17,7 +17,7 @@ if ! timeout 120 /home/steam/steamcmd/steamcmd.sh \
     fi
     
     /home/steam/steamcmd/steamcmd.sh \
-        +force_install_dir /home/steam/wayward-server \
+        +force_install_dir /home/steam/data/server \
         +login ${STEAM_USER} ${STEAM_PASS} \
         +app_update 379210 validate \
         +quit
@@ -28,7 +28,7 @@ echo ">>> Starting Wayward server..."
 # Server mode is always enabled for dedicated server
 ARGS+=("+server")
  
-ARGS+=("+savePath" "/home/steam/save")
+ARGS+=("+savePath" "/home/steam/data/saves")
 
 # Switch options (boolean flags)
 if [[ "${allowHardcoreRespawns:-false}" == "true" ]]; then
@@ -134,4 +134,4 @@ echo ">>> Wayward server arguments: ${ARGS[*]}"
 Xvfb :99 -screen 0 1024x768x24 &
 export DISPLAY=:99
 
-exec /home/steam/wayward-server/wayward --no-sandbox "${ARGS[@]}"
+exec /home/steam/data/server/wayward --no-sandbox "${ARGS[@]}"
