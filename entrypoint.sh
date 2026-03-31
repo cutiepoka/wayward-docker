@@ -25,9 +25,6 @@ fi
 
 echo ">>> Starting Wayward server..."
 
-# Build command line arguments array
-# ARGS=("--no-sandbox")
-
 # Server mode is always enabled for dedicated server
 ARGS+=("+server")
  

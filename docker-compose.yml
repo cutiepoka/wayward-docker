@@ -4,16 +4,14 @@ services:
     container_name: wayward-server
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=100
+      - PUID=${PUID}
+      - PGID=${PGID}
       - STEAM_USER=${STEAM_USER}
       - STEAM_PASS=${STEAM_PASS}
-      # - port=38740 
-      - load=sam 
-      # - private=true 
+      - load=${SAVE_NAME}
     ports:
       - 38740:38740
     volumes:
-      - /mnt/user/appdata/wayward/server:/home/steam/wayward-server
-      - /mnt/user/appdata/wayward/saves:/home/steam/save
-      - /mnt/user/appdata/wayward/steamcache:/home/steam/Steam
+      - ${LOCAL_PATH}/server:/home/steam/wayward-server
+      - ${LOCAL_PATH}/saves:/home/steam/save
+      - ${LOCAL_PATH}/steamcache:/home/steam/Steam
