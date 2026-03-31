@@ -9,7 +9,7 @@ if ! timeout 120 /home/steam/steamcmd/steamcmd.sh \
     +login anonymous \
     +app_update 379210 validate \
     +quit; then
-    
+
     echo ">>> Anonymous update failed, trying with Steam credentials..."
     if [[ -z "${STEAM_USER}" || -z "${STEAM_PASS}" ]]; then
         echo "ERROR: Steam credentials required but STEAM_USER or STEAM_PASS not provided"

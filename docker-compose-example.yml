@@ -1,15 +1,15 @@
 services:
   wayward-server:
-    build: .
+    image: samuelt1/wayward:latest
     container_name: wayward-server
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=100
+      - PUID=${PUID}
+      - PGID=${PGID}
       - STEAM_USER=${STEAM_USER}
       - STEAM_PASS=${STEAM_PASS}
-      - load=sam
+      - load=${SAVE_NAME}
     ports:
       - 38740:38740
     volumes:
-      - /mnt/user/appdata/wayward:/home/steam/data
+      - ${LOCAL_PATH}:/home/steam/data

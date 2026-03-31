@@ -16,19 +16,6 @@ docker run -d -p 38740:38740 \
 
 All Wayward server options can be configured through environment variables. Variable names match the exact command-line parameter names found here: https://www.waywardgame.com/multiplayer
 
-Example configuration
-
-```bash
-docker run -d -p 38740:38740 \
-  -v wayward_data:/home/steam/data \
-  -e STEAM_USER="your_steam_username" \
-  -e STEAM_PASS="your_steam_password" \
-  -e allowHardcoreRespawns="true" \
-  -e pvp="true" \
-  -e backupInterval="30" \
-  samuelt1/wayward:latest
-```
-
 ### Steam Authentication
 
 - `STEAM_USER` - Steam username (optional - tries anonymous first)
@@ -90,7 +77,6 @@ services:
     ports:
       - "38740:38740"
     environment:
-      - name=My Wayward Server
       - maxPlayers=16
       - difficulty=hardcore
       - pvp=true
@@ -110,7 +96,6 @@ volumes:
 ### PVP Server Example
 ```yaml
 environment:
-  - name=PVP Battle Server
   - pvp=true
   - difficulty=hardcore
   - maxPlayers=32
@@ -120,7 +105,6 @@ environment:
 ### Private Development Server
 ```yaml
 environment:
-  - name=Dev Server
   - private=true
   - dev=true
   - maxPlayers=4
